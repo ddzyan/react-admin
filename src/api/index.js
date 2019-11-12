@@ -8,11 +8,19 @@ export const login = async (username, password) =>
   ajax("/login", { username, password }, "POST");
 
 // 添加类别
-export const addCategory = (categoryName, parentId) =>
-  ajax("/manage/category/add", { categoryName, parentId }, "POST");
+export const addCategory = (chainName, currencyName, explorer, parentId) =>
+  ajax(
+    "/manage/category/add",
+    { chainName, currencyName, explorer, parentId },
+    "POST"
+  );
 // 更新类别
-export const updateCategory = (categoryName, categoryId) =>
-  ajax("/manage/category/update", { categoryName, categoryId }, "POST");
+export const updateCategory = (chainName, currencyName, explorer, categoryId) =>
+  ajax(
+    "/manage/category/update",
+    { chainName, currencyName, explorer, categoryId },
+    "POST"
+  );
 
 // 获取一级或某个二级分类列表
 export const getCategory = parentId =>

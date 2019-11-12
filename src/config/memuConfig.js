@@ -12,12 +12,12 @@ const menuList = [
     children: [
       // 子菜单列表
       {
-        title: "品类管理",
+        title: "币种管理",
         key: "/category",
         icon: "bars"
       },
       {
-        title: "商品管理",
+        title: "账号管理",
         key: "/product",
         icon: "tool"
       }
