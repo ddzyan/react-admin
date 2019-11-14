@@ -108,8 +108,8 @@ class LeftNav extends Component {
   render() {
     let { pathname } = this.props.location;
     const openKey = this.openKey;
-    if (pathname.indexOf("/product") === 0) {
-      pathname = "/product";
+    if (pathname.indexOf("/account") === 0) {
+      pathname = "/account";
     }
 
     return (
@@ -142,7 +142,6 @@ class LeftNav extends Component {
  * 将state 函数属性传递给UI组件的props属性
  */
 
-export default connect(
-  state => ({ user: state.user }),
-  { setHeadTitle }
-)(withRouter(LeftNav));
+export default connect(state => ({ user: state.user }), { setHeadTitle })(
+  withRouter(LeftNav)
+);

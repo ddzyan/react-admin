@@ -55,20 +55,32 @@ class CategoryForm extends Component {
               : "",
             rules: [
               { required: true, message: "链名称必须输入" },
-              { max: 12, message: "链名称需要小于12位" }
+              { max: 10, message: "链名称需要小于12位" }
             ]
           })(<Input placeholder="请输入链名称"></Input>)}
         </Item>
-        <Item label="链符号" {...fromStyle}>
+        <Item label="币种符号" {...fromStyle}>
           {getFieldDecorator("currencyName", {
             initialValue: selectCategory.currencyName
               ? selectCategory.currencyName
               : "",
             rules: [
-              { required: true, message: "链符号必须输入" },
-              { max: 12, message: "链符号需要小于12位" }
+              { required: true, message: "币种符号必须输入" },
+              { max: 10, message: "币种符号需要小于10位" }
             ]
-          })(<Input placeholder="请输入链符号"></Input>)}
+          })(<Input placeholder="请输入币种符号"></Input>)}
+        </Item>
+        <Item label="小数位数" {...fromStyle}>
+          {getFieldDecorator("decimal", {
+            initialValue:
+              selectCategory.decimal !== undefined
+                ? selectCategory.decimal
+                : "",
+            rules: [
+              { required: true, message: "小数位数必须输入" },
+              { max: 20, message: "小数位数需要小于20位" }
+            ]
+          })(<Input placeholder="请输入小数位数"></Input>)}
         </Item>
         <Item label="浏览器地址" {...fromStyle}>
           {getFieldDecorator("explorer", {
@@ -77,6 +89,37 @@ class CategoryForm extends Component {
               : "",
             rules: [{ max: 250, message: "浏览器地址需要小于250位" }]
           })(<Input placeholder="请输入浏览器地址"></Input>)}
+        </Item>
+        <Item label="合约地址" {...fromStyle}>
+          {getFieldDecorator("contract", {
+            initialValue: selectCategory.contract
+              ? selectCategory.contract
+              : "",
+            rules: [{ max: 255, message: "合约地址需要小于250位" }]
+          })(<Input placeholder="请输入合约地址"></Input>)}
+        </Item>
+        <Item label="余额模型" {...fromStyle}>
+          {getFieldDecorator("balanceType", {
+            initialValue: selectCategory.balanceType
+              ? selectCategory.balanceType
+              : 1
+          })(
+            <Select>
+              <Option value={2}>余额模型</Option>
+              <Option value={1}>UTXO模型</Option>
+            </Select>
+          )}
+        </Item>
+        <Item label="状态" {...fromStyle}>
+          {getFieldDecorator("state", {
+            initialValue:
+              selectCategory.state !== undefined ? selectCategory.state : "1"
+          })(
+            <Select>
+              <Option value="1">启用</Option>
+              <Option value="0">关闭</Option>
+            </Select>
+          )}
         </Item>
       </Form>
     );

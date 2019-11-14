@@ -18,7 +18,7 @@ const menuList = [
       },
       {
         title: "账号管理",
-        key: "/product",
+        key: "/account",
         icon: "tool"
       }
     ]

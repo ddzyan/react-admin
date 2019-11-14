@@ -8,17 +8,53 @@ export const login = async (username, password) =>
   ajax("/login", { username, password }, "POST");
 
 // 添加类别
-export const addCategory = (chainName, currencyName, explorer, parentId) =>
+export const addCategory = (
+  chainName,
+  currencyName,
+  explorer,
+  contract,
+  balanceType,
+  state,
+  decimal,
+  parentId
+) =>
   ajax(
     "/manage/category/add",
-    { chainName, currencyName, explorer, parentId },
+    {
+      chainName,
+      currencyName,
+      explorer,
+      contract,
+      balanceType,
+      state,
+      decimal,
+      parentId
+    },
     "POST"
   );
 // 更新类别
-export const updateCategory = (chainName, currencyName, explorer, categoryId) =>
+export const updateCategory = (
+  chainName,
+  currencyName,
+  explorer,
+  contract,
+  balanceType,
+  state,
+  decimal,
+  categoryId
+) =>
   ajax(
     "/manage/category/update",
-    { chainName, currencyName, explorer, categoryId },
+    {
+      chainName,
+      currencyName,
+      explorer,
+      contract,
+      balanceType,
+      state,
+      decimal,
+      categoryId
+    },
     "POST"
   );
 
@@ -32,7 +68,7 @@ export const getCategoryInfo = async categoryId =>
 
 //对商品进行上架/下架处理
 export const updateProductStatus = async (productId, status) =>
-  ajax("/manage/product/updateStatus", { productId, status }, "POST");
+  ajax("/manage/account/updateStatus", { productId, status }, "POST");
 
 /**
  * 获取商品分页列表
@@ -40,37 +76,44 @@ export const updateProductStatus = async (productId, status) =>
  * @param {string} pageSize  一页显示数量
  */
 export const getProductList = (pageNum, pageSize) =>
-  ajax("/manage/product/list", { pageNum, pageSize }, "GET");
+  ajax("/manage/account/list", { pageNum, pageSize }, "GET");
 
 // 优化个查询条件接口
 export const searchProductList = (pageNum, pageSize, searchName, searchType) =>
   ajax(
-    "/manage/product/search",
+    "/manage/account/search",
     { pageNum, pageSize, [searchType]: searchName },
     "GET"
   );
 
 //删除商品
 export const delProduct = _id =>
-  ajax("/manage/product/delete", { _id }, "POST");
+  ajax("/manage/account/delete", { _id }, "POST");
 
 // 删除图片
 export const deleteImg = name => ajax("/manage/img/delete", { name }, "POST");
 
 // 更新/添加商品
 export const AddOrUpdateProduct = ({
-  _id,
+  id,
   categoryId,
-  pCategoryId,
-  name,
-  desc,
-  price,
-  detail,
-  imgs
+  account,
+  address,
+  publicKey,
+  balance,
+  state
 }) =>
   ajax(
-    `/manage/product/${_id ? "update" : "add"}`,
-    { _id, categoryId, pCategoryId, name, desc, price, detail, imgs },
+    `/manage/account/${id ? "update" : "add"}`,
+    {
+      id,
+      categoryId,
+      account,
+      address,
+      publicKey,
+      balance,
+      state
+    },
     "POST"
   );
 

@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import ProductAddUpdate from "./add-update";
 import ProductDetail from "./detail";
 import ProductHome from "./home";
-import "./product.less";
+import "./account.less";
 class Product extends Component {
   state = {};
 
@@ -15,11 +15,11 @@ class Product extends Component {
   render() {
     return (
       <Switch>
-        <Route path="/product" component={ProductHome} exact={true} />
-        <Route path="/product/add" component={ProductAddUpdate} />
-        <Route path="/product/update" component={ProductAddUpdate} />
-        <Route path="/product/detail" component={ProductDetail} />
-        <Redirect to="/product" />
+        <Route path="/account" component={ProductHome} exact={true} />
+        <Route path="/account/add" component={ProductAddUpdate} />
+        <Route path="/account/update" component={ProductAddUpdate} />
+        <Route path="/account/detail" component={ProductDetail} />
+        <Redirect to="/account" />
       </Switch>
     );
   }

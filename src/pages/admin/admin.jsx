@@ -11,7 +11,7 @@ import Bar from "../charts/bar";
 import Line from "../charts/line";
 import Pie from "../charts/pie";
 import Order from "../order/order";
-import Product from "../product/product";
+import Account from "../account/account";
 import Role from "../role/role";
 import User from "../user/user";
 import NotFound from "../not-fount/not-found";
@@ -40,7 +40,7 @@ class Admin extends Component {
               <Redirect from="/" exact to="/home" />
               <Route path="/home" component={Home} />
               <Route path="/category" component={Category} />
-              <Route path="/product" component={Product} />
+              <Route path="/account" component={Account} />
               <Route path="/user" component={User} />
               <Route path="/role" component={Role} />
               <Route path="/charts/bar" component={Bar} />

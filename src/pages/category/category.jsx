@@ -29,8 +29,9 @@ class Category extends Component {
   showSubCategorys = ({ id, chainName }) => {
     this.setState(
       {
-        parentId: id,
-        parentName: chainName
+        parentId: id.toString(),
+        parentName: chainName,
+        loading: true
       },
       () => {
         this.getCategorys();
@@ -49,8 +50,26 @@ class Category extends Component {
         dataIndex: "chainName"
       },
       {
-        title: "链符号",
+        title: "币种符号",
         dataIndex: "currencyName"
+      },
+      {
+        title: "合约地址",
+        dataIndex: "contract"
+      },
+      {
+        title: "余额模型",
+        dataIndex: "balanceType",
+        render: value => (value === "1" ? "UTXO模型" : "余额模型")
+      },
+      {
+        title: "状态",
+        dataIndex: "state",
+        render: value => (value === "1" ? "启动" : "关闭")
+      },
+      {
+        title: "小数位数",
+        dataIndex: "decimal"
       },
       {
         title: "浏览器地址",
@@ -149,39 +168,80 @@ class Category extends Component {
   submint = () => {
     this.form.validateFields(async (error, value) => {
       if (!error) {
-        const { parentId, chainName, currencyName, explorer } = value;
-        let response;
+        this.form.resetFields();
         this.closeModal();
-        if (parentId) {
-          response = await addCategory(
-            chainName,
-            currencyName,
-            explorer,
-            Number.parseInt(parentId)
-          );
+        if (value.parentId) {
+          await this.add(value);
         } else {
-          response = await updateCategory(
-            chainName,
-            currencyName,
-            explorer,
-            this.selectCategory.id
-          );
-        }
-
-        if (response.status === 0) {
-          if (this.state.parentId === parentId) {
-            this.getCategorys();
-          } else if (parentId === "0") {
-            this.getCategorys(0);
-          }
-          message.success(`${parentId ? "添加" : "修改"}成功`);
-        } else {
-          message.success(`${parentId ? "添加" : "修改"}失败`);
+          await this.update(value);
         }
       } else {
         message.error("验证失败");
       }
     });
+  };
+
+  add = async value => {
+    const {
+      parentId,
+      chainName,
+      currencyName,
+      explorer,
+      contract,
+      balanceType,
+      state,
+      decimal
+    } = value;
+    const response = await addCategory(
+      chainName,
+      currencyName,
+      explorer,
+      contract,
+      Number.parseInt(balanceType),
+      Number.parseInt(state),
+      Number.parseInt(decimal),
+      Number.parseInt(parentId)
+    );
+    if (response.status === 0) {
+      if (this.state.parentId === parentId) {
+        this.getCategorys();
+      } else if (parentId === "0") {
+        this.getCategorys(0);
+      }
+
+      message.success("添加成功");
+    } else {
+      message.success("添加失败");
+    }
+  };
+
+  update = async value => {
+    const {
+      chainName,
+      currencyName,
+      explorer,
+      contract,
+      balanceType,
+      state,
+      decimal
+    } = value;
+    const response = await updateCategory(
+      chainName,
+      currencyName,
+      explorer,
+      contract,
+      Number.parseInt(balanceType),
+      Number.parseInt(state),
+      Number.parseInt(decimal),
+      Number.parseInt(this.selectCategory.id)
+    );
+    if (response.status === 0) {
+      this.getCategorys();
+
+      message.success("修改成功");
+    } else {
+      message.success("修改成功");
+    }
   };
 
   /**

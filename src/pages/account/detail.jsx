@@ -20,7 +20,7 @@ class ProductDetail extends Component {
    */
   async componentDidMount() {
     if (!this.props.location.state) {
-      return <Redirect to="/product" />;
+      return <Redirect to="/account" />;
     }
     const { categoryId, pCategoryId } = this.props.location.state;
     if (pCategoryId === "0") {
@@ -45,7 +45,7 @@ class ProductDetail extends Component {
 
   render() {
     if (!this.props.location.state) {
-      return <Redirect to="/product" />;
+      return <Redirect to="/account" />;
     }
     const { name, desc, detail, imgs, price } = this.props.location.state;
 

@@ -38,17 +38,24 @@ class ProductHome extends Component {
   initColumns = () => {
     this.columns = [
       {
-        title: "商品名称",
-        dataIndex: "name"
+        title: "账号",
+        dataIndex: "account"
       },
       {
-        title: "商品描述",
-        dataIndex: "desc"
+        title: "地址",
+        dataIndex: "address"
       },
       {
-        title: "价格",
-        dataIndex: "price",
-        render: price => `¥${price}`
+        title: "公钥",
+        dataIndex: "publicKey"
+      },
+      {
+        title: "所属链",
+        dataIndex: "chainName"
+      },
+      {
+        title: "余额",
+        dataIndex: "balance"
       },
       {
         title: "状态",
@@ -63,9 +70,9 @@ class ProductHome extends Component {
                   this.updateProductStatus(product);
                 }}
               >
-                {product.status === 1 ? "下架" : "上架"}
+                {product.state ? "关闭" : "激活"}
               </Button>
-              <span>{product.status === 1 ? "在售" : "已下架"}</span>
+              <span>{product.state ? "激活" : "关闭"}</span>
             </span>
           );
         }
@@ -73,12 +80,12 @@ class ProductHome extends Component {
       {
         width: 100,
         title: "操作",
-        render: product => {
+        render: account => {
           return (
             <div>
               <LinkButton
                 onClick={() =>
-                  this.props.history.push("/product/detail", product)
+                  this.props.history.push("/account/detail", account)
                 }
               >
                 详情
@@ -89,13 +96,13 @@ class ProductHome extends Component {
                    * 此语法只支持browerRouter
                    * 通过传入第二个参数，将 product 对象传递到子组件
                    */
-                  this.props.history.push("/product/update", product)
+                  this.props.history.push("/account/update", account)
                 }
               >
                 修改
               </LinkButton>
 
-              <LinkButton onClick={() => this.delProduct(product._id)}>
+              <LinkButton onClick={() => this.delProduct(account.id)}>
                 删除
               </LinkButton>
             </div>
@@ -204,7 +211,7 @@ class ProductHome extends Component {
     const extra = (
       <Button
         type="primary"
-        onClick={() => this.props.history.push("/product/add")}
+        onClick={() => this.props.history.push("/account/add")}
       >
         <Icon type="plus" />
         添加
@@ -216,7 +223,7 @@ class ProductHome extends Component {
         <Table
           loading={loading}
           bordered={true}
-          rowKey="_id"
+          rowKey="id"
           dataSource={products}
           columns={this.columns}
           pagination={{
