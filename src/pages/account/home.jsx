@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Card, Select, Table, Input, Button, Icon, message } from "antd";
-
-import { delProduct } from "../../api";
+import { Card, Select, Table, Input, Button, Icon, message, Modal } from "antd";
+import { delAccount } from "../../api";
 import LinkButton from "../../components/link-button";
 import {
   getProductList,
@@ -9,14 +8,14 @@ import {
   updateProductStatus
 } from "../../api";
 import { PAGE_SIZE } from "../../config/constantConfig";
-
+const { confirm } = Modal;
 const Option = Select.Option;
 class AccountHome extends Component {
   state = {
     loading: true,
     total: 0,
     products: [],
-    searchType: "productDesc",
+    searchType: "chainName",
     searchValue: ""
   };
 
@@ -73,13 +72,6 @@ class AccountHome extends Component {
             <div>
               <LinkButton
                 onClick={() =>
-                  this.props.history.push("/account/detail", account)
-                }
-              >
-                详情
-              </LinkButton>
-              <LinkButton
-                onClick={() =>
                   /**
                    * 此语法只支持browerRouter
                    * 通过传入第二个参数，将 product 对象传递到子组件
@@ -90,7 +82,7 @@ class AccountHome extends Component {
                 修改
               </LinkButton>
 
-              <LinkButton onClick={() => this.delProduct(account.id)}>
+              <LinkButton onClick={() => this.delAccount(account.id)}>
                 删除
               </LinkButton>
             </div>
@@ -101,13 +93,26 @@ class AccountHome extends Component {
   };
 
   // 删除商品
-  delProduct = async id => {
-    const response = await delProduct(id);
-    if (response.status === 0) {
-      message.success("删除成功");
-      this.getProducts(1);
+  delAccount = id => {
+    const accountId = id ? [id] : this.selectAccountId;
+    if (accountId.length > 0) {
+      confirm({
+        title: "确认删除账号？",
+        okText: "确认",
+        okType: "danger",
+        cancelText: "取消",
+        onOk: async () => {
+          const response = await delAccount(accountId);
+          if (response.status === 0) {
+            message.success("删除成功");
+            this.getProducts(1);
+          } else {
+            message.error("删除失败");
+          }
+        }
+      });
     } else {
-      message.error("删除失败");
+      message.error("请先选择");
     }
   };
 
@@ -144,6 +149,26 @@ class AccountHome extends Component {
     }
   };
 
+  onChange = (selectedRowKeys, selectedRows) => {
+    if (selectedRows.length > 0) {
+      selectedRows.forEach(element => {
+        this.selectAccountId.push(element.id);
+      });
+    } else {
+      this.selectAccountId = [];
+    }
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      "selectedRows: ",
+      this.selectAccountId
+    );
+  };
+
+  getCheckboxProps = record => ({
+    disabled: record.name === "Disabled User", // Column configuration not to be checked
+    name: record.name
+  });
+
   /**
    * 执行异步初始化
    * 初始化获得 商品列表 时候，需要传入当前页码，不然将为undefind
@@ -153,7 +178,8 @@ class AccountHome extends Component {
   }
 
   //执行同步初始化
-  UNSAFE_componentWillMount() {
+  componentWillMount() {
+    this.selectAccountId = [];
     this.initColumns();
   }
 
@@ -174,8 +200,8 @@ class AccountHome extends Component {
             });
           }}
         >
-          <Option value="productDesc">按照描述搜索</Option>
-          <Option value="productName">按照名称搜索</Option>
+          <Option value="chainName">按照链搜索</Option>
+          <Option value="account">按照账号搜索</Option>
         </Select>
         <Input
           style={{ width: 150, margin: 10 }}
@@ -197,18 +223,33 @@ class AccountHome extends Component {
       </div>
     );
     const extra = (
-      <Button
-        type="primary"
-        onClick={() => this.props.history.push("/account/add")}
-      >
-        <Icon type="plus" />
-        添加
-      </Button>
+      <div>
+        <Button
+          type="primary"
+          onClick={() => this.props.history.push("/account/add")}
+        >
+          <Icon type="plus" />
+          添加
+        </Button>
+
+        <Button
+          type="primary"
+          style={{ margin: 10 }}
+          onClick={() => this.delAccount()}
+        >
+          <Icon type="minus" />
+          批量删除
+        </Button>
+      </div>
     );
 
     return (
-      <Card title={title} extra={extra}>
+      <Card title={title} extra={extra} className="account-home">
         <Table
+          rowSelection={{
+            onChange: this.onChange,
+            getCheckboxProps: this.getCheckboxProps
+          }}
           loading={loading}
           bordered={true}
           rowKey="id"

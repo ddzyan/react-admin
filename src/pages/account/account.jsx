@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import ProductAddUpdate from "./add-update";
-import ProductDetail from "./detail";
 import AccountHome from "./home";
 import "./account.less";
 class Account extends Component {
@@ -18,7 +17,6 @@ class Account extends Component {
         <Route path="/account" component={AccountHome} exact={true} />
         <Route path="/account/add" component={ProductAddUpdate} />
         <Route path="/account/update" component={ProductAddUpdate} />
-        <Route path="/account/detail" component={ProductDetail} />
         <Redirect to="/account" />
       </Switch>
     );

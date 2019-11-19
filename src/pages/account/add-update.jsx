@@ -49,7 +49,7 @@ class ProductAddUpdate extends Component {
       const options = response.data.map(({ chainName, id }) => ({
         value: id,
         label: chainName,
-        isLeaf: parentId === 0 ? false : true
+        isLeaf: parentId === "0" ? true : false
       }));
       if (parentId === 0) {
         // 初始化一级分类菜单
@@ -148,7 +148,7 @@ class ProductAddUpdate extends Component {
    * 同步初始化
    * 记录商品对象和更新标记
    */
-  UNSAFE_componentWillMount() {
+  componentWillMount() {
     const account = this.props.location.state;
     this.isUpdate = !!account;
     this.account = account || {};
@@ -242,7 +242,7 @@ class ProductAddUpdate extends Component {
           </Item>
           <Item label="状态:">
             {getFieldDecorator("state", {
-              initialValue: state ? "1" : "0",
+              initialValue: !state ? "0" : "1",
               rules: [{ required: true, message: "状态不能为空" }]
             })(
               <Select>

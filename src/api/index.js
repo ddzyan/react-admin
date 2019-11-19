@@ -94,7 +94,7 @@ export const searchProductList = (pageNum, pageSize, searchName, searchType) =>
   );
 
 //删除账号
-export const delProduct = accountId =>
+export const delAccount = accountId =>
   ajax("/manage/account/delete", { accountId }, "POST");
 
 // 删除图片
