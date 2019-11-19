@@ -11,7 +11,7 @@ import {
 import { PAGE_SIZE } from "../../config/constantConfig";
 
 const Option = Select.Option;
-class ProductHome extends Component {
+class AccountHome extends Component {
   state = {
     loading: true,
     total: 0,
@@ -62,19 +62,7 @@ class ProductHome extends Component {
         width: 100,
         //dataIndex: "status",  如歌值为状态则无法获得商品ID
         render: product => {
-          return (
-            <span>
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.updateProductStatus(product);
-                }}
-              >
-                {product.state ? "关闭" : "激活"}
-              </Button>
-              <span>{product.state ? "激活" : "关闭"}</span>
-            </span>
-          );
+          return <span>{product.state ? "激活" : "关闭"}</span>;
         }
       },
       {
@@ -113,8 +101,8 @@ class ProductHome extends Component {
   };
 
   // 删除商品
-  delProduct = async _id => {
-    const response = await delProduct(_id);
+  delProduct = async id => {
+    const response = await delProduct(id);
     if (response.status === 0) {
       message.success("删除成功");
       this.getProducts(1);
@@ -239,4 +227,4 @@ class ProductHome extends Component {
   }
 }
 
-export default ProductHome;
+export default AccountHome;

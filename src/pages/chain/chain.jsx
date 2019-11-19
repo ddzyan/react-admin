@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { Card, Button, Icon, Table, message, Modal } from "antd";
-
-import "./category.less";
 import LinkButton from "../../components/link-button";
-import { getCategory, updateCategory, addCategory } from "../../api";
-import AddForm from "./category-form";
-class Category extends Component {
+import { getCategory, delCategory } from "../../api";
+const { confirm } = Modal;
+class ChainHome extends Component {
   state = {
     loading: true, //是否显示加载动画
     selectCategory: {}, // 选择中的分类对象,用于传递给更新组件的categoryName
@@ -21,7 +19,12 @@ class Category extends Component {
     this.getCategorys();
   }
   // 初始化同步数据
-  UNSAFE_componentWillMount() {
+  componentWillMount() {
+    const parentId = this.props.location.state;
+    this.setState({
+      parentId: parentId || "0"
+    });
+
     this.initColumns();
   }
 
@@ -85,7 +88,9 @@ class Category extends Component {
         width: 300,
         render: category => (
           <span>
-            <LinkButton onClick={() => this.showUpdateModal(category)}>
+            <LinkButton
+              onClick={() => this.props.history.push("/chain/add", category)}
+            >
               修改分类
             </LinkButton>
             {this.state.parentId === "0" ? (
@@ -95,10 +100,36 @@ class Category extends Component {
             ) : (
               ""
             )}
+            <LinkButton onClick={() => this.showDeleteConfirm(category)}>
+              删除
+            </LinkButton>
           </span>
         )
       }
     ];
+  };
+
+  showDeleteConfirm = category => {
+    confirm({
+      title: "确认删除？",
+      content: "请确认子分类，以及账号是否已经全部删除",
+      okText: "确认",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: async () => {
+        const response = await delCategory(Number.parseInt(category.id));
+        if (response.status === 0) {
+          message.success("删除成功");
+        } else {
+          message.success("删除失败");
+        }
+        if (this.state.parentId === "0") {
+          this.getCategorys(0);
+        } else {
+          this.getCategorys(this.state.parentId);
+        }
+      }
+    });
   };
 
   // 获取一级/二级分类列表
@@ -123,26 +154,6 @@ class Category extends Component {
     }
   };
 
-  /**
-   * 显示更新弹窗
-   * 由于更新 selectCategory ，不需要进行页面重新渲染
-   * 则不将此属性添加到 state 中
-   */
-  showUpdateModal = category => {
-    this.selectCategory = category;
-    this.setState({
-      modalVisible: 1
-    });
-  };
-
-  // 显示添加弹窗
-  showAddModal = () => {
-    this.selectCategory = {};
-    this.setState({
-      modalVisible: 1
-    });
-  };
-
   // 显示一级分类菜单
   showCategorys = () => {
     this.setState({
@@ -150,98 +161,6 @@ class Category extends Component {
       parentId: "0",
       parentName: ""
     });
-  };
-
-  // 关闭添加或者更新弹窗
-  closeModal = () => {
-    this.form.resetFields();
-    this.setState({
-      modalVisible: 0
-    });
-  };
-
-  /**
-   * 添加分类列表
-   * 如果添加的分类，不是当前分类列表则不进行刷新
-   * 如果是在二级分类列表，添加一级分类，需要进行刷新，并且传入刷新的分类ID
-   */
-  submint = () => {
-    this.form.validateFields(async (error, value) => {
-      if (!error) {
-        this.form.resetFields();
-        this.closeModal();
-        if (value.parentId) {
-          await this.add(value);
-        } else {
-          await this.update(value);
-        }
-      } else {
-        message.error("验证失败");
-      }
-    });
-  };
-
-  add = async value => {
-    const {
-      parentId,
-      chainName,
-      currencyName,
-      explorer,
-      contract,
-      balanceType,
-      state,
-      decimal
-    } = value;
-    const response = await addCategory(
-      chainName,
-      currencyName,
-      explorer,
-      contract,
-      Number.parseInt(balanceType),
-      Number.parseInt(state),
-      Number.parseInt(decimal),
-      Number.parseInt(parentId)
-    );
-    if (response.status === 0) {
-      if (this.state.parentId === parentId) {
-        this.getCategorys();
-      } else if (parentId === "0") {
-        this.getCategorys(0);
-      }
-
-      message.success("添加成功");
-    } else {
-      message.success("添加失败");
-    }
-  };
-
-  update = async value => {
-    const {
-      chainName,
-      currencyName,
-      explorer,
-      contract,
-      balanceType,
-      state,
-      decimal
-    } = value;
-    const response = await updateCategory(
-      chainName,
-      currencyName,
-      explorer,
-      contract,
-      Number.parseInt(balanceType),
-      Number.parseInt(state),
-      Number.parseInt(decimal),
-      Number.parseInt(this.selectCategory.id)
-    );
-    if (response.status === 0) {
-      this.getCategorys();
-
-      message.success("修改成功");
-    } else {
-      message.success("修改成功");
-    }
   };
 
   /**
@@ -260,7 +179,6 @@ class Category extends Component {
       subCategorys
     } = this.state;
     // 防止在第一次渲染的时候，selectCategory 对象为 undefind，导致的获取 name 报错
-    const category = this.selectCategory ? this.selectCategory : {};
     const title =
       parentId === "0" ? (
         "一级分类列表"
@@ -272,7 +190,12 @@ class Category extends Component {
         </span>
       );
     const extra = (
-      <Button type="primary" onClick={() => this.showAddModal()}>
+      <Button
+        type="primary"
+        onClick={() =>
+          this.props.history.push("/chain/add", this.state.parentId)
+        }
+      >
         <Icon type="plus"></Icon>
         添加
       </Button>
@@ -280,23 +203,6 @@ class Category extends Component {
 
     return (
       <div className="category">
-        <Modal
-          title={category.id ? "修改分类" : "添加分类"}
-          cancelText={"取消"}
-          okText={"确认"}
-          visible={this.state.modalVisible === 1}
-          onOk={this.submint}
-          onCancel={() => this.closeModal()}
-        >
-          <AddForm
-            selectCategory={category}
-            categorys={categorys}
-            parentId={parentId}
-            setForm={form => {
-              this.form = form;
-            }}
-          />
-        </Modal>
         <Card title={title} className="category-card" extra={extra}>
           <Table
             bordered
@@ -312,4 +218,4 @@ class Category extends Component {
   }
 }
 
-export default Category;
+export default ChainHome;

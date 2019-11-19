@@ -25,7 +25,6 @@ class ProductAddUpdate extends Component {
       account: { parentId },
       isUpdate
     } = this;
-    console.log(parentId);
     if (isUpdate && parentId !== 0) {
       const childOptions = await this.getCategory(parentId);
 
@@ -167,7 +166,6 @@ class ProductAddUpdate extends Component {
       state,
       parentId
     } = account;
-    console.log("account :", account);
     const title = (
       <span>
         <LinkButton

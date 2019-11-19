@@ -16,7 +16,8 @@ export const addCategory = (
   balanceType,
   state,
   decimal,
-  parentId
+  parentId,
+  imageUrl
 ) =>
   ajax(
     "/manage/category/add",
@@ -28,12 +29,14 @@ export const addCategory = (
       balanceType,
       state,
       decimal,
-      parentId
+      parentId,
+      imageUrl
     },
     "POST"
   );
 // 更新类别
 export const updateCategory = (
+  categoryId,
   chainName,
   currencyName,
   explorer,
@@ -41,7 +44,7 @@ export const updateCategory = (
   balanceType,
   state,
   decimal,
-  categoryId
+  imageUrl
 ) =>
   ajax(
     "/manage/category/update",
@@ -53,7 +56,8 @@ export const updateCategory = (
       balanceType,
       state,
       decimal,
-      categoryId
+      categoryId,
+      imageUrl
     },
     "POST"
   );
@@ -65,6 +69,9 @@ export const getCategory = parentId =>
 // 根据分类ID 获取分类名称
 export const getCategoryInfo = async categoryId =>
   ajax("/manage/category/info", { categoryId }, "GET");
+
+export const delCategory = async categoryId =>
+  ajax("/manage/category/delete", { categoryId }, "POST");
 
 //对商品进行上架/下架处理
 export const updateProductStatus = async (productId, status) =>
@@ -86,12 +93,13 @@ export const searchProductList = (pageNum, pageSize, searchName, searchType) =>
     "GET"
   );
 
-//删除商品
-export const delProduct = _id =>
-  ajax("/manage/account/delete", { _id }, "POST");
+//删除账号
+export const delProduct = accountId =>
+  ajax("/manage/account/delete", { accountId }, "POST");
 
 // 删除图片
-export const deleteImg = name => ajax("/manage/img/delete", { name }, "POST");
+export const deleteImg = name =>
+  ajax("/manage/category/img/delete", { name }, "POST");
 
 // 更新/添加商品
 export const AddOrUpdateProduct = ({

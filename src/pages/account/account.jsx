@@ -3,9 +3,9 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import ProductAddUpdate from "./add-update";
 import ProductDetail from "./detail";
-import ProductHome from "./home";
+import AccountHome from "./home";
 import "./account.less";
-class Product extends Component {
+class Account extends Component {
   state = {};
 
   /**
@@ -15,7 +15,7 @@ class Product extends Component {
   render() {
     return (
       <Switch>
-        <Route path="/account" component={ProductHome} exact={true} />
+        <Route path="/account" component={AccountHome} exact={true} />
         <Route path="/account/add" component={ProductAddUpdate} />
         <Route path="/account/update" component={ProductAddUpdate} />
         <Route path="/account/detail" component={ProductDetail} />
@@ -25,4 +25,4 @@ class Product extends Component {
   }
 }
 
-export default Product;
+export default Account;

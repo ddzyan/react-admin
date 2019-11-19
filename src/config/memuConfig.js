@@ -6,22 +6,14 @@ const menuList = [
     isPublic: true // 公开的
   },
   {
-    title: "商品",
-    key: "/products",
-    icon: "appstore",
-    children: [
-      // 子菜单列表
-      {
-        title: "币种管理",
-        key: "/category",
-        icon: "bars"
-      },
-      {
-        title: "账号管理",
-        key: "/account",
-        icon: "tool"
-      }
-    ]
+    title: "币链管理",
+    key: "/chain",
+    icon: "property-safety"
+  },
+  {
+    title: "账号管理",
+    key: "/account",
+    icon: "account-book"
   },
 
   {

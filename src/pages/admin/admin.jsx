@@ -6,12 +6,12 @@ import { Redirect, Switch, Route } from "react-router-dom";
 import "./admin.less";
 
 import Home from "../home/home";
-import Category from "../category/category";
+import Chain from "../chain/home";
+import Account from "../account/account";
 import Bar from "../charts/bar";
 import Line from "../charts/line";
 import Pie from "../charts/pie";
 import Order from "../order/order";
-import Account from "../account/account";
 import Role from "../role/role";
 import User from "../user/user";
 import NotFound from "../not-fount/not-found";
@@ -39,7 +39,7 @@ class Admin extends Component {
             <Switch>
               <Redirect from="/" exact to="/home" />
               <Route path="/home" component={Home} />
-              <Route path="/category" component={Category} />
+              <Route path="/chain" component={Chain} />
               <Route path="/account" component={Account} />
               <Route path="/user" component={User} />
               <Route path="/role" component={Role} />

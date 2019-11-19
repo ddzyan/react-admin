@@ -15,7 +15,7 @@ function getBase64(file) {
 
 export default class PicturesWall extends React.Component {
   static propTypes = {
-    imgs: PropTypes.array
+    imageUrl: PropTypes.string
   };
 
   /**
@@ -25,16 +25,14 @@ export default class PicturesWall extends React.Component {
    */
   constructor(props) {
     super(props);
-    const { imgs } = this.props;
+    const { imageUrl } = this.props;
     const fileList = [];
-    if (imgs && imgs.length > 0) {
-      imgs.forEach((name, index) => {
-        fileList.push({
-          uid: -index,
-          name,
-          status: "done",
-          url: `${BASE_IMG_URL}${name}`
-        });
+    if (imageUrl) {
+      fileList.push({
+        uid: -1,
+        imageUrl,
+        status: "done",
+        url: `${BASE_IMG_URL}${imageUrl}`
       });
     }
     // 初始化状态
@@ -72,6 +70,7 @@ export default class PicturesWall extends React.Component {
       file.name = fileList[fileList.length - 1].response.data.name;
       message.success("上传成功");
     } else if (file.status === "removed") {
+      console.log(file);
       const response = await deleteImg(file.name);
       if (response.status === 0) {
         message.success("删除成功");
@@ -99,7 +98,7 @@ export default class PicturesWall extends React.Component {
     return (
       <div>
         <Upload
-          action="/manage/img/upload" // 上传服务器接口地址
+          action="/manage/category/img/upload" // 上传服务器接口地址
           listType="picture-card" // 图片框样式
           name="image" // 发送到后台的文件参数名称
           fileList={fileList} // 上传的文件
@@ -107,7 +106,7 @@ export default class PicturesWall extends React.Component {
           onPreview={this.handlePreview} // 预览事件
           onChange={this.handleChange} // 状态改变事件
         >
-          {fileList.length >= 3 ? null : uploadButton}
+          {fileList.length >= 1 ? null : uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}
