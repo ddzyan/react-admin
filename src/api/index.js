@@ -67,14 +67,16 @@ export const getCategory = parentId =>
   ajax("/manage/category/list", { parentId }, "GET");
 
 // 根据分类ID 获取分类名称
-export const getCategoryInfo = async categoryId =>
+export const getCategoryInfo = categoryId =>
   ajax("/manage/category/info", { categoryId }, "GET");
 
-export const delCategory = async categoryId =>
+export const totalChain = () => ajax("/manage/category/total", {}, "GET");
+
+export const delCategory = categoryId =>
   ajax("/manage/category/delete", { categoryId }, "POST");
 
 //对商品进行上架/下架处理
-export const updateProductStatus = async (productId, status) =>
+export const updateProductStatus = (productId, status) =>
   ajax("/manage/account/updateStatus", { productId, status }, "POST");
 
 /**
@@ -96,6 +98,8 @@ export const searchProductList = (pageNum, pageSize, searchName, searchType) =>
 //删除账号
 export const delAccount = accountId =>
   ajax("/manage/account/delete", { accountId }, "POST");
+
+export const totalAccount = () => ajax("/manage/account/total", {}, "GET");
 
 // 删除图片
 export const deleteImg = name =>

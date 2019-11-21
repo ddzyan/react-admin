@@ -116,7 +116,7 @@ class LeftNav extends Component {
       <div className="left-nav">
         <Link to="/" className="left-nav-header">
           <img src={logo} alt="logo"></img>
-          <h1>React 后台</h1>
+          <h1>后台管理</h1>
         </Link>
         <Menu
           theme="dark"

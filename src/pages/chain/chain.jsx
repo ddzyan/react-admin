@@ -91,7 +91,7 @@ class ChainHome extends Component {
             <LinkButton
               onClick={() => this.props.history.push("/chain/add", category)}
             >
-              修改分类
+              修改
             </LinkButton>
             {this.state.parentId === "0" ? (
               <LinkButton onClick={() => this.showSubCategorys(category)}>
