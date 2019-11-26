@@ -118,7 +118,7 @@ class ChainHome extends Component {
       cancelText: "取消",
       onOk: async () => {
         const response = await delCategory(Number.parseInt(category.id));
-        if (response.status === 0) {
+        if (response.status === "success") {
           message.success("删除成功");
         } else {
           message.success("删除失败");
@@ -136,7 +136,7 @@ class ChainHome extends Component {
   getCategorys = async parentId => {
     parentId = parentId || this.state.parentId;
     const result = await getCategory(parentId);
-    if (result && result.status === 0) {
+    if (result && result.status === "success") {
       const categorys = result.data;
       if (Object.is(parentId, "0")) {
         this.setState({

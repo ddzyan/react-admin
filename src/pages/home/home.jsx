@@ -23,14 +23,14 @@ class Home extends Component {
       .then(result => {
         const [chainResult, accountResult] = result;
         let chainCount, chain, accountCount;
-        if (chainResult.status === 0) {
+        if (chainResult.status === "success") {
           chainCount = chainResult.data.total;
           chain = chainResult.data.chain;
         } else {
           message.error("获取账号统计失败");
         }
 
-        if (accountResult.status === 0) {
+        if (accountResult.status === "success") {
           accountCount = accountResult.data.total;
         } else {
           message.error("获取币种统计失败");

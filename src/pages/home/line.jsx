@@ -15,7 +15,7 @@ class Line extends Component {
   getOption = (sales, stores) => {
     return {
       title: {
-        text: "账号近十天余额变化"
+        text: "监控账号余额变化"
       },
       tooltip: {},
       legend: {
@@ -55,7 +55,6 @@ class Line extends Component {
 
   render() {
     // 根据传入的chainId,获取对应账号的余额变化情况
-    const { chainId } = this.props;
     const { stores, sales } = this.state;
 
     return <ReactEcharts option={this.getOption(sales, stores)} />;

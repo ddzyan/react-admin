@@ -72,7 +72,7 @@ export default class PicturesWall extends React.Component {
     } else if (file.status === "removed") {
       console.log(file);
       const response = await deleteImg(file.name);
-      if (response.status === 0) {
+      if (response.status === "success") {
         message.success("删除成功");
       } else {
         message.error("删除失败");

@@ -19,6 +19,7 @@ class UserForm extends Component {
   state = {};
   render() {
     const { roles, user } = this.props;
+    console.log("roles :", roles);
     const { getFieldDecorator } = this.props.form;
     const fromStyle = {
       labelCol: { span: 4 },
@@ -59,8 +60,10 @@ class UserForm extends Component {
             <Input placeholder="请输入邮箱地址" />
           )}
         </Item>
-        <Item label="角色:" {...fromStyle} defaultValue={roles[0].id}>
-          {getFieldDecorator("role_id", { initialValue: user.role_id })(
+        <Item label="角色:" {...fromStyle}>
+          {getFieldDecorator("roleId", {
+            initialValue: roles.length > 0 ? roles[0].id : ""
+          })(
             <Select>
               {roles.map(role => (
                 <Option key={role.id} value={role.id}>

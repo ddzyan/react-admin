@@ -59,7 +59,7 @@ export default class RichTextEditor extends Component {
       xhr.addEventListener("load", () => {
         const response = JSON.parse(xhr.responseText);
         console.log("response :", response);
-        if (response.status === 0) {
+        if (response.status === "success") {
           message.success("上传成功");
           resolve({ data: { link: response.data.url } });
         } else {

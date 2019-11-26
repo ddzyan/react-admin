@@ -38,7 +38,7 @@ class Role extends Component {
   // 异步获得 角色列表
   getRoleList = async () => {
     const response = await getRoleList();
-    if (response && response.status === 0) {
+    if (response && response.status === "success") {
       const roles = response.data;
       this.setState({
         roles
@@ -61,7 +61,7 @@ class Role extends Component {
       if (!error) {
         const { name } = value;
         const response = await addRole(name);
-        if (response && response.status === 0) {
+        if (response && response.status === "success") {
           message.success("添加成功");
           // 不发送请求，直接更新缓存数据 this.getRoleList();
           /**
@@ -104,7 +104,7 @@ class Role extends Component {
 
     const response = await updateRole(role);
 
-    if (response && response.status === 0) {
+    if (response && response.status === "success") {
       if (role.id === user.role_id) {
         // 如果修改的权限是用户当前的权限需要重新登陆，刷新菜单栏
         message.success("当前用户角色权限成功,请重新登陆");

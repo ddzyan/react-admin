@@ -25,7 +25,7 @@ class AccountHome extends Component {
       product._id,
       product.status === 1 ? 0 : 1
     );
-    if (response && response.status === 0) {
+    if (response && response.status === "success") {
       message.success("更新成功");
       this.getProducts(this.pageNum);
     } else {
@@ -103,7 +103,7 @@ class AccountHome extends Component {
         cancelText: "取消",
         onOk: async () => {
           const response = await delAccount(accountId);
-          if (response.status === 0) {
+          if (response.status === "success") {
             message.success("删除成功");
             this.getProducts(1);
           } else {
@@ -137,7 +137,7 @@ class AccountHome extends Component {
       response = await getProductList(this.pageNum, PAGE_SIZE);
     }
 
-    if (response && response.status === 0) {
+    if (response && response.status === "success") {
       const { list, total } = response.data;
       this.setState({
         loading: false,

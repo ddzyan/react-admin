@@ -4,7 +4,12 @@
  * sync action：函数 dispatch=>{}
  */
 import { login } from "../api";
-import { SET_HEAD_TITLE, RECIVER_USER, SHOW_MSG ,RESET_USER} from "./action-types";
+import {
+  SET_HEAD_TITLE,
+  RECIVER_USER,
+  SHOW_MSG,
+  RESET_USER
+} from "./action-types";
 import storageUtils from "../utils/storageUtils";
 
 /**
@@ -22,16 +27,15 @@ export const reciverUser = user => ({ type: RECIVER_USER, user });
  */
 export const showMsg = errorMessage => ({ type: SHOW_MSG, errorMessage });
 
-
 /**
  * 退出登陆
  * 重置本地locationstroage
  * 重置 state
  */
- export const resetUser = ()=>{
-  storageUtils.removeUser()
-  return {type:RESET_USER}
- }
+export const resetUser = () => {
+  storageUtils.removeUser();
+  return { type: RESET_USER };
+};
 
 /**
  * async action
@@ -43,7 +47,7 @@ export const userLogin = (username, password) => {
   return async dispatch => {
     //1 登陆
     const response = await login(username, password);
-    if (response && response.status === 0) {
+    if (response && response.status === "success") {
       const user = response.data;
       //2 成功则调用 action 保存 user 对象到 redux管理的 state.user 中，并且保存到 locationstorage中
       storageUtils.saveUser(user);

@@ -17,7 +17,8 @@ export const addCategory = (
   state,
   decimal,
   parentId,
-  imageUrl
+  imageUrl,
+  nodeUrl
 ) =>
   ajax(
     "/manage/category/add",
@@ -30,7 +31,8 @@ export const addCategory = (
       state,
       decimal,
       parentId,
-      imageUrl
+      imageUrl,
+      nodeUrl
     },
     "POST"
   );
@@ -44,7 +46,8 @@ export const updateCategory = (
   balanceType,
   state,
   decimal,
-  imageUrl
+  imageUrl,
+  nodeUrl
 ) =>
   ajax(
     "/manage/category/update",
@@ -57,7 +60,8 @@ export const updateCategory = (
       state,
       decimal,
       categoryId,
-      imageUrl
+      imageUrl,
+      nodeUrl
     },
     "POST"
   );

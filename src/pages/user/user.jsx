@@ -73,7 +73,7 @@ class User extends Component {
   getUserList = async () => {
     const response = await getUserList();
     console.log("getUserList :", response);
-    if (response && response.status === 0) {
+    if (response && response.status === "success") {
       const { users, roles } = response.data;
       this.initRoleNames(roles);
       this.setState({ users, roles, loading: false });
@@ -92,20 +92,20 @@ class User extends Component {
   submint = () => {
     this.form.validateFields(async (error, value) => {
       if (!error) {
-        const { username, password, phone, email, role_id } = value;
+        const { username, password, phone, email, roleId } = value;
         const user = {
           username,
           password,
           phone,
           email,
-          role_id
+          roleId
         };
         //判断是添加还是修改
         if (this.state.user) {
           user.id = this.state.user.id;
         }
         const response = await addOrUpdateUser(user);
-        if (response && response.status === 0) {
+        if (response && response.status === "success") {
           if (this.props.user.username === username) {
             message.success(`更新角色是当前用户角色，请重新登陆`);
             this.props.resetUser();
@@ -131,7 +131,7 @@ class User extends Component {
   // 删除用户
   delUser = async userId => {
     const response = await deleteUser(userId);
-    if (response && response.status === 0) {
+    if (response && response.status === "success") {
       message.success("删除成功");
       this.setState({
         loading: true
@@ -196,7 +196,4 @@ class User extends Component {
   }
 }
 
-export default connect(
-  state => ({ user: state.user }),
-  { resetUser }
-)(User);
+export default connect(state => ({ user: state.user }), { resetUser })(User);

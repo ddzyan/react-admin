@@ -32,7 +32,7 @@ class AddUpdate extends Component {
   getCategorys = async parentId => {
     parentId = parentId || this.state.parentId;
     const result = await getCategory(parentId);
-    if (result && result.status === 0) {
+    if (result && result.status === "success") {
       const categorys = result.data;
       if (Object.is(parentId, "0")) {
         this.setState({
@@ -79,7 +79,8 @@ class AddUpdate extends Component {
       balanceType,
       state,
       decimal,
-      imageUrl
+      imageUrl,
+      nodeUrl
     } = value;
 
     const response = await updateCategory(
@@ -91,9 +92,10 @@ class AddUpdate extends Component {
       Number.parseInt(balanceType),
       Number.parseInt(state),
       Number.parseInt(decimal),
-      imageUrl
+      imageUrl,
+      nodeUrl
     );
-    if (response.status === 0) {
+    if (response.status === "success") {
       this.props.history.push("/chain");
       message.success("修改成功");
     } else {
@@ -111,7 +113,8 @@ class AddUpdate extends Component {
       balanceType,
       state,
       decimal,
-      imageUrl
+      imageUrl,
+      nodeUrl
     } = value;
     const response = await addCategory(
       chainName,
@@ -122,9 +125,10 @@ class AddUpdate extends Component {
       Number.parseInt(state),
       Number.parseInt(decimal),
       Number.parseInt(parentId),
-      imageUrl
+      imageUrl,
+      nodeUrl
     );
-    if (response.status === 0) {
+    if (response.status === "success") {
       this.props.history.push("/chain");
       message.success("添加成功");
     } else {
@@ -142,7 +146,8 @@ class AddUpdate extends Component {
       contract,
       chainName,
       imageUrl,
-      balanceType
+      balanceType,
+      nodeUrl
     } = this.chain;
     console.log("imageUrl :", imageUrl);
     const selectParentId = parentId ? parentId : this.selectParentId;
@@ -248,6 +253,17 @@ class AddUpdate extends Component {
                 <Option value="0">关闭</Option>
               </Select>
             )}
+          </Item>
+          <Item label="网关地址" {...formItemLayout}>
+            {getFieldDecorator("nodeUrl", {
+              initialValue: nodeUrl,
+              rules: [
+                {
+                  max: 30,
+                  message: "长度不能超过30位"
+                }
+              ]
+            })(<Input placeholder="请输入网关地址" />)}
           </Item>
           <Item label="合约地址" {...formItemLayout}>
             {getFieldDecorator("contract", {

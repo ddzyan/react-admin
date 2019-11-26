@@ -45,8 +45,8 @@ class ProductAddUpdate extends Component {
   getCategory = async (parentId = 0) => {
     // 获取分类列表
     const response = await getCategory(parentId);
-    if (response && response.status === 0) {
-      const options = response.data.map(({ chainName, id }) => ({
+    if (response && response.status === "success") {
+      const options = response.result.map(({ chainName, id }) => ({
         value: id,
         label: chainName,
         isLeaf: parentId === "0" ? true : false
@@ -113,7 +113,7 @@ class ProductAddUpdate extends Component {
           newAccount.id = this.account.id;
         }
         const response = await AddOrUpdateProduct(newAccount);
-        if (response.status === 0) {
+        if (response.status === "success") {
           message.success(`${this.isUpdate ? "更新" : "添加"}商品成功`);
           this.props.history.goBack();
         } else {
