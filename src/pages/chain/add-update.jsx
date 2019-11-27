@@ -220,7 +220,7 @@ class AddUpdate extends Component {
           </Item>
           <Item label="小数位数" {...formItemLayout}>
             {getFieldDecorator("decimal", {
-              initialValue: decimal,
+              initialValue: decimal.toString(),
               rules: [
                 { required: true, message: "小数位数必须输入" },
                 { max: 20, message: "小数位数需要小于20位" }
@@ -229,7 +229,7 @@ class AddUpdate extends Component {
           </Item>
           <Item label="余额模型" {...formItemLayout}>
             {getFieldDecorator("balanceType", {
-              initialValue: balanceType || "1",
+              initialValue: balanceType.toString() || "1",
               rules: [{ required: true, message: "请选择余额模型" }]
             })(
               <Select>
@@ -240,7 +240,7 @@ class AddUpdate extends Component {
           </Item>
           <Item label="状态" {...formItemLayout}>
             {getFieldDecorator("state", {
-              initialValue: state || "1",
+              initialValue: state ? "1" : "0",
               rules: [
                 {
                   required: true,

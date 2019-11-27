@@ -38,8 +38,8 @@ class User extends Component {
       },
       {
         title: "所属角色",
-        dataIndex: "role_id",
-        render: role_id => this.roleNames.get(role_id)
+        dataIndex: "roleId",
+        render: roleId => this.roleNames.get(roleId)
       },
       {
         title: "操作",
@@ -64,7 +64,7 @@ class User extends Component {
 
   initRoleNames = roles => {
     const roleNames = roles.reduce((pre, role) => {
-      pre.set(role._id, role.name);
+      pre.set(role.id, role.name);
       return pre;
     }, new Map());
     this.roleNames = roleNames;
@@ -72,7 +72,6 @@ class User extends Component {
 
   getUserList = async () => {
     const response = await getUserList();
-    console.log("getUserList :", response);
     if (response && response.status === "success") {
       const { users, roles } = response.data;
       this.initRoleNames(roles);
@@ -102,7 +101,7 @@ class User extends Component {
         };
         //判断是添加还是修改
         if (this.state.user) {
-          user.id = this.state.user.id;
+          user.userId = this.state.user.id;
         }
         const response = await addOrUpdateUser(user);
         if (response && response.status === "success") {
@@ -183,7 +182,7 @@ class User extends Component {
         <Table
           loading={loading}
           bordered={true}
-          rowKey="_id"
+          rowKey="id"
           columns={this.columns}
           dataSource={users}
           pagination={{

@@ -46,10 +46,10 @@ class ProductAddUpdate extends Component {
     // 获取分类列表
     const response = await getCategory(parentId);
     if (response && response.status === "success") {
-      const options = response.result.map(({ chainName, id }) => ({
-        value: id,
+      const options = response.data.map(({ chainName, id }) => ({
+        value: id.toString(),
         label: chainName,
-        isLeaf: parentId === "0" ? true : false
+        isLeaf: parentId === 0 ? true : false
       }));
       if (parentId === 0) {
         // 初始化一级分类菜单
@@ -175,7 +175,7 @@ class ProductAddUpdate extends Component {
         >
           <Icon type="arrow-left" style={{ fontSize: 15 }} />
         </LinkButton>
-        <span style={{ fontSize: 15 }}>添加商品</span>
+        <span style={{ fontSize: 15 }}>添加账号</span>
       </span>
     );
     let categoryIds = [];
@@ -186,7 +186,7 @@ class ProductAddUpdate extends Component {
         categoryIds.push(parentId.toString(), categoryId.toString());
       }
     }
-
+    console.log("categoryIds :", categoryIds);
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 8 }
@@ -217,7 +217,7 @@ class ProductAddUpdate extends Component {
             {getFieldDecorator("balance", {
               initialValue: balance ? balance : "0",
               rules: [
-                { required: true, message: "商品价格不能为空" },
+                { required: true, message: "余额不能为空" },
                 { validator: this.validatePrice }
               ]
             })(

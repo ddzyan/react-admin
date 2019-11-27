@@ -72,7 +72,6 @@ class AuthForm extends PureComponent {
    *
    */
   render() {
-    console.log("auth-form render()");
     const { role } = this.props;
     const formItemLayout = {
       labelCol: { span: 4 }, // 左侧label的宽度

@@ -63,12 +63,12 @@ class ChainHome extends Component {
       {
         title: "余额模型",
         dataIndex: "balanceType",
-        render: value => (value === "1" ? "UTXO模型" : "余额模型")
+        render: value => (value === 1 ? "UTXO模型" : "余额模型")
       },
       {
         title: "状态",
         dataIndex: "state",
-        render: value => (value === "1" ? "启动" : "关闭")
+        render: value => (value ? "启动" : "关闭")
       },
       {
         title: "小数位数",

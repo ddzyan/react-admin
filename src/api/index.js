@@ -148,7 +148,7 @@ export const getUserList = () => ajax("/manage/user/list", {}, "GET");
 
 // 添加/修改用户
 export const addOrUpdateUser = user =>
-  ajax(`/manage/user/${user.id ? "update" : "add"}`, { ...user }, "POST");
+  ajax(`/manage/user/${user.userId ? "update" : "add"}`, { ...user }, "POST");
 
 // 删除用户
 export const deleteUser = userId =>

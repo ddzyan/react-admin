@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, Divider } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import "./index.less";
-import { setHeadTitle } from "../../redux/actions";
 import logo from "../../assets/images/logo.png";
+import { setHeadTitle } from "../../redux/actions";
 import menuList from "../../config/memuConfig";
 const { SubMenu } = Menu;
 class LeftNav extends Component {
@@ -116,8 +116,9 @@ class LeftNav extends Component {
       <div className="left-nav">
         <Link to="/" className="left-nav-header">
           <img src={logo} alt="logo"></img>
-          <h1>后台管理</h1>
+          <h1>区块链管理</h1>
         </Link>
+        <Divider />
         <Menu
           theme="dark"
           mode="inline"

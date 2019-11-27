@@ -15,6 +15,7 @@ class AccountHome extends Component {
     loading: true,
     total: 0,
     products: [],
+    selectAccountId: [],
     searchType: "chainName",
     searchValue: ""
   };
@@ -54,7 +55,8 @@ class AccountHome extends Component {
       },
       {
         title: "余额",
-        dataIndex: "balance"
+        dataIndex: "balance",
+        sorter: (a, b) => a.balance - b.balance
       },
       {
         title: "状态",
@@ -94,7 +96,8 @@ class AccountHome extends Component {
 
   // 删除商品
   delAccount = id => {
-    const accountId = id ? [id] : this.selectAccountId;
+    const { selectAccountId } = this.state;
+    const accountId = id ? [id] : selectAccountId;
     if (accountId.length > 0) {
       confirm({
         title: "确认删除账号？",
@@ -150,18 +153,15 @@ class AccountHome extends Component {
   };
 
   onChange = (selectedRowKeys, selectedRows) => {
+    const selectAccountId = [];
     if (selectedRows.length > 0) {
       selectedRows.forEach(element => {
-        this.selectAccountId.push(element.id);
+        selectAccountId.push(element.id);
       });
-    } else {
-      this.selectAccountId = [];
     }
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      this.selectAccountId
-    );
+    this.setState({
+      selectAccountId
+    });
   };
 
   getCheckboxProps = record => ({
@@ -175,11 +175,18 @@ class AccountHome extends Component {
    */
   componentDidMount() {
     this.getProducts(1);
+    this.timeInterval = setInterval(() => {
+      this.getProducts(this.pageNum);
+    }, 30 * 60 * 1000);
+  }
+
+  componentWillUnmount() {
+    console.log("清除计时器");
+    clearInterval(this.timeInterval);
   }
 
   //执行同步初始化
   componentWillMount() {
-    this.selectAccountId = [];
     this.initColumns();
   }
 
@@ -188,7 +195,13 @@ class AccountHome extends Component {
    * 使用 受控组件(值由react进行管理) 获取select和input的值，并且使用this,setState进行管理更新(是有必要更新到state中？因为每次更新都将刷新页面，而实际这两个值的修改界面并没有更改)
    */
   render() {
-    const { total, products, loading, searchType } = this.state;
+    const {
+      total,
+      products,
+      loading,
+      searchType,
+      selectAccountId
+    } = this.state;
     const title = (
       <div>
         <Select
@@ -233,6 +246,7 @@ class AccountHome extends Component {
         </Button>
 
         <Button
+          disabled={selectAccountId.length > 0 ? false : true}
           type="primary"
           style={{ margin: 10 }}
           onClick={() => this.delAccount()}

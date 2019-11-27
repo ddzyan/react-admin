@@ -56,9 +56,10 @@ class UserForm extends Component {
           )}
         </Item>
         <Item label="邮箱:" {...fromStyle}>
-          {getFieldDecorator("email", { initialValue: user.email })(
-            <Input placeholder="请输入邮箱地址" />
-          )}
+          {getFieldDecorator("email", {
+            initialValue: user.email,
+            rules: [{ max: 50, message: "邮箱长度不能超过50" }]
+          })(<Input placeholder="请输入邮箱地址" />)}
         </Item>
         <Item label="角色:" {...fromStyle}>
           {getFieldDecorator("roleId", {
